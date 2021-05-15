@@ -103,7 +103,10 @@
 		chrall.player().strainMalus = parseInt($("#fatiguebm").text());
 		chrall.player().strainMalus = isNaN(chrall.player().strainMalus) ? 0 : chrall.player().strainMalus;
 		// Ajoute PV pouvant etre perdu sans malus de temps
-		let extraTime = chrall.parseDuration($("#bm").text()) - chrall.parseDuration($("#blessure").text()) - chrall.parseDuration($("#poids").text());
+		let extraTime = ['#reserve', '#mouche', '#blessure', '#poids', '#bmequipement']
+			.map(id => $(id).text())
+			.map(txt => chrall.parseDuration(txt) * (txt.includes('-') ? 1 : -1))
+			.reduce((a, b) => a + b);
 		let extraPv = Math.floor(extraTime * chrall.player().pvMax / (250 * 60));
 		if (extraPv > 0){
 			$("#pos").find("div.barre").closest("td").append(`<span>Perdre <strong>${extraPv}PV</strong> ne créera pas un malus de temps</span>`);

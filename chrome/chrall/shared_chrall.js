@@ -147,7 +147,7 @@
 		}
 
 		var notificationId = "notification_" + new Date().getTime();
-		var icon_html = options['icon'] ? '<span class="icon"><img src="' + chrome.extension.getURL(options['icon']) +
+		var icon_html = options['icon'] ? '<span class="icon"><img src="' + chrome.runtime.getURL(options['icon']) +
 				'" /></span>' : '';
 
 		// Injection de la notif (au dessus des autres éventuelles)

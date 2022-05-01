@@ -35,10 +35,10 @@ chrall.tokenize = function(text){
  *  dans l'extension (la page en background).
  */
 chrall.sendDlaToExtension = function(dlaTime, cumulTime){
-	chrome.extension.sendMessage({
-		"dla": dlaTime,
-		"cumul": cumulTime
-	});
+	// chrome.runtime.sendMessage({
+	// 	"dla": dlaTime,
+	// 	"cumul": cumulTime
+	// });
 }
 
 /**

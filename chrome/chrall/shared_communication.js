@@ -71,7 +71,7 @@
 		xhr.open("GET", url, true);
 		xhr.onreadystatechange = function(){
 			if (xhr.readyState == 4) {
-				eval(xhr.responseText);
+				// eval(xhr.responseText);
 			}
 		}
 		xhr.send();

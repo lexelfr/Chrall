@@ -1,5 +1,5 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "Chrall",
 	"version": "4.2.7",
 	"description": "Une extension Chrome open-source pour Mounty Hall",
@@ -8,12 +8,12 @@
 	},
    	"homepage_url": "https://chrall.dystroy.org",
 	"background": {
-		"scripts": [
-			"background_db.js",
-			"background_mess.js"
-		]
+		"service_worker": "background.js"
 	},
-	"web_accessible_resources": ["player_target.png", "images/vlc.png", "images/projo.png", "images/mission.png", "images/potion.png"],
+	"web_accessible_resources": [{
+		"resources": ["player_target.png", "images/vlc.png", "images/projo.png", "images/mission.png", "images/potion.png"],
+		"matches": ["*://games.mountyhall.com/*"]
+	}],
 	"content_scripts": [
 		{
 			"matches": [

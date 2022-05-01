@@ -71,7 +71,7 @@
 		}
 		var dist = parseInt(cells[0].innerHTML);
 		if (dist <= chrall.player().talents["Projectile Magique"].range && item.z === chrall.player().z) {
-			var projoImg = ` <img class='projo' data-dist='${dist}' src='${chrome.extension.getURL("/images/projo.png")}' />`;
+			var projoImg = ` <img class='projo' data-dist='${dist}' src='${chrome.runtime.getURL("/images/projo.png")}' />`;
 			$(nameCell).append(projoImg);
 			item.icons += projoImg;
 		}
@@ -84,7 +84,7 @@
 			var isRace = !mission.race || item.name.indexOf(mission.race) > -1;
 			var isLevel = mission.minLevel <= item.level && item.level <= mission.maxLevel;
 			if (isRace && isLevel) {
-				var missionImg = ` <img class='mission' data-id='${id}' src='${chrome.extension.getURL("/images/mission.png")}' />`;
+				var missionImg = ` <img class='mission' data-id='${id}' src='${chrome.runtime.getURL("/images/mission.png")}' />`;
 				$(nameCell).append(missionImg);
 				item.icons += missionImg;
 			}
@@ -98,7 +98,7 @@
 		}
 		var dist = parseInt(cells[0].innerHTML);
 		if (dist <= chrall.player().talents["Lancer de Potions"].range && item.z === chrall.player().z){
-			var potionImg = ` <img class='potion' data-dist='${dist}' src='${chrome.extension.getURL("/images/potion.png")}' />`;
+			var potionImg = ` <img class='potion' data-dist='${dist}' src='${chrome.runtime.getURL("/images/potion.png")}' />`;
 			$(nameCell).append(potionImg);
 			item.icons += potionImg;
 		}
@@ -131,7 +131,7 @@
 			item.setName(nameCell.textContent);
 			nameCell.children[0].id = item.id + "_monster"; // !! Analyze AND modify : inject monster id
 			if (chrall.isSeeingHidden(nameCell.innerText)) {
-				var vlcImg = " <img class='vlc' src='" + chrome.extension.getURL("/images/vlc.png") + "' />";
+				var vlcImg = " <img class='vlc' src='" + chrome.runtime.getURL("/images/vlc.png") + "' />";
 				nameCell.innerHTML += vlcImg;
 				item.icons += vlcImg;
 			}

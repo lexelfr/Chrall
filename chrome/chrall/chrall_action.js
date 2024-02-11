@@ -14,7 +14,7 @@
 	chrall.handleActionPage = function(){
 		//> on va essayer de lire les PA disponibles
 		var	player = chrall.player(),
-			sentence = $('b:contains("Il me reste ")');
+			sentence = $('div.titre3:contains("Il me reste ")');
 		if (sentence.length > 0) {
 			var tokens = chrall.tokenize(sentence.text());
 			try {

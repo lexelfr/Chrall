@@ -90,6 +90,8 @@
 	const PREFIX = true, SUFFIX = false;
 
 	const templates = [
+		["Affamé", 5, SUFFIX],
+		["Affamée", 5, SUFFIX],
 		["Agressif", 1, SUFFIX],
 		["Agressive", 1, SUFFIX],
 		["Alchimiste", 2, SUFFIX],
@@ -121,6 +123,8 @@
 		["des Abysses", 3, SUFFIX],
 		["Effrayé", -1, SUFFIX],
 		["Effrayée", -1, SUFFIX],
+		["Enflammé", 5, SUFFIX],
+		["Enflammée", 5, SUFFIX],
 		["Enragé", 3, SUFFIX],
 		["Enragée", 3, SUFFIX],
 		["Esculape", 2, SUFFIX],
@@ -251,6 +255,7 @@
 		["Crasc Médius Parasitus", 20, MONSTRE],
 		["Crasc Maexus", 25, MONSTRE],
 		["Crasc Maexus Parasitus", 30, MONSTRE],
+		["Crasc Parasitus", 14, MONSTRE],
 		["Crasc", 10, MONSTRE],
 		["Croquemitaine", 6, MORT_VIVANT],
 		["Cube Gélatineux", 32, MONSTRE],

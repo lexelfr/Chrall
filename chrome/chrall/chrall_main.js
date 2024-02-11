@@ -66,8 +66,11 @@ case "Play_o_MMC1.php":
 	break;
 case "Play_a_Competence16.php": // préparation de CDM (le formulaire de choix du monstre)
 	break;
-case "Play_a_Competence16b.php": // résultat de cdm
-	chrall.handleCdmPage();
+case "Play_a_CompetenceResult.php":
+	// résultat de cdm
+	if ($('p.titre2').text().indexOf('Connaissance des Monstres') > 0){
+		chrall.handleCdmPage();
+	}
 	break;
 case "Play_a_Competence18b.php": // résultat d'insulte
 	chrall.analyseResultatInsulte();
@@ -89,6 +92,7 @@ case "Play_menu.php": // c'est la frame de gauche
 	break;
 case "Play2.php": // c'est le frameset qui engloble tout ce qui n'est pas la colonne menu de gauche
 	break;
+case "Play_a_Talent.php":
 case "Play_a_Move.php":
 	chrall.listenForChangeLocation('action');
 	chrall.injectMove();
@@ -133,6 +137,9 @@ case "Mission_Liste.php":
 	break;
 case "Mission_Etape.php":
 	chrall.addLinksAndUpdateMissions();
+	break;
+case "Play_a_NewPos.php":
+	chrall.updatePosition();
 	break;
 }
 

@@ -69,7 +69,7 @@
 		if (chrall.player().race !== "Tomawak"){
 			return;
 		}
-		var dist = parseInt(cells[0].innerHTML);
+		var dist = parseInt(cells[0].innerText);
 		if (dist <= chrall.player().talents["Projectile Magique"].range && item.z === chrall.player().z) {
 			var projoImg = ` <img class='projo' data-dist='${dist}' src='${chrome.runtime.getURL("/images/projo.png")}' />`;
 			$(nameCell).append(projoImg);

@@ -22,11 +22,24 @@
 			var xyz = todoArgs.split(' ');
 			if (xyz.length == 3) {
 
-				ch_check('ai_DeplX', xyz[0]);
-				ch_check('ai_DeplY', xyz[1]);
-				ch_check('ai_DeplN', xyz[2]);
+				ch_check('depl_x', xyz[0]);
+				ch_check('depl_y', xyz[1]);
+				ch_check('depl_n', xyz[2]);
 			}
 		}
 	};
+
+	chrall.updatePosition = function(){
+		// Update position if move was successful
+		let mhPlay = $("#mhPlay").text();
+		if (mhPlay.indexOf('Vous avez RÉUSSI') >= 0) {
+			let position = $('#datajet').next().text();
+			chrall.player().x = parseInt(/X = (-?\d+)/g.exec(position)[1]);
+			chrall.player().y = parseInt(/Y = (-?\d+)/g.exec(position)[1]);
+			chrall.player().z = parseInt(/N\s+= (-?\d+)/g.exec(position)[1]);
+			chrall.player().pa = parseInt(/il vous en reste (\d+)/g.exec(mhPlay)[1]);
+			chrall.updateTroll();
+		}
+	}
 
 })(window.chrall = window.chrall || {});

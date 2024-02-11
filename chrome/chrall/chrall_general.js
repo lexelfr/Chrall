@@ -112,3 +112,7 @@ chrall.getPxOnKill = function(level){
 	}
 	return Math.max(0, 10 + 2 * (level - chrall.player().level) + level) + " PX lors du kill";
 }
+
+chrall.pluralize = function(count, noun = 'case', suffix = 's') {
+	return `${count} ${noun}${count > 1 ? suffix : ''}`;
+}

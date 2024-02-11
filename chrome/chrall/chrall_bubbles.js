@@ -92,11 +92,11 @@
 		$bubbleDiv.mouseover(chrall.keepBubbleOpen).mouseout(chrall.letBubbleClose).prependTo('body');
 		bubbleExists = true;
 
-		chrall.nbBubbles = chrall.nbBubbles || 0;
-		if (chrall.nbBubbles++ < 6) {
-			$bubbleDiv.append($("<div/>", { id: "bubbleCopyMessage", style: "font-size: 75%; max-width:30em"})
-					.text("Pour copier l'info via CTRL-C, le focus doit être mis dans la frame (e.x. clic sur la barre d'options, ...	)"));
-		}
+		// chrall.nbBubbles = chrall.nbBubbles || 0;
+		// if (chrall.nbBubbles++ < 6) {
+		// 	$bubbleDiv.append($("<div/>", { id: "bubbleCopyMessage", style: "font-size: 75%; max-width:30em"})
+		// 			.text("Pour copier l'info via CTRL-C, le focus doit être mis dans la frame (e.x. clic sur la barre d'options, ...	)"));
+		// }
 		chrall.copiableContent = $("#bubble");
 		$(window).on("copy", chrall.clipboardOverride);
 		if (target.attr("x")) {

@@ -24,11 +24,10 @@ chrall.projoRange = (view) => {
  * Retourne un objet contenant les degats/degats critique du projo
  */
 chrall.projoDamage = (diffRange) => {
-	var damages = {};
-	var projectileDamageDiceNumber = Math.floor(chrall.player().sight.diceNumber * chrall.player().magicalDamageMultiplier);
-	damages.damage = 2 * (Math.floor(projectileDamageDiceNumber * 0.5) + diffRange) + chrall.player().damage.magicalBonus;
-	damages.damageCrit = damages.damage + 2 * Math.floor(projectileDamageDiceNumber * 0.25);
-	return damages;
+	return {
+		damage: 2 * (Math.floor(chrall.player().sight.diceNumber * 0.5) + diffRange) + chrall.player().damage.magicalBonus,
+		damageCrit: 2 * (Math.floor(chrall.player().sight.diceNumber * 0.75) + diffRange) + chrall.player().damage.magicalBonus
+	};
 };
 
 /**
@@ -52,54 +51,52 @@ chrall.talentBubblers = {
 	// Prière de conserver l'ordre alphabétique
 	// ----------------------------------------
 
-	"Accélération du Métabolisme": (player)=>{
+	"Accélération du Métabolisme": ()=>{
 		return chrall.playerAmAbstract.join("<br>");
 	},
 
 	"Attaque Précise": (player, compLevel)=>{
-		var attacBonus = 3.5 * Math.min(Math.floor(player.attac.diceNumber / 2), compLevel * 3);
-		var html = "<table><tr><td>Niveau</td><td> : " + compLevel + "</td></tr>";
-		html += "<tr><td>Attaque moyenne</td><td> : " + (player.attac.getMean() + attacBonus) +
-				"</td></tr>";
-		html += "<tr><td>Dégâts moyens</td><td> : " + player.damage.getMean() + " / " +
-				player.damage.getCriticalMean() + "</td></tr>";
-		html += "</table>";
-		return html;
+		return `<table>
+		<tr><td>Niveau</td><td> : ${compLevel}</td></tr>
+		<tr><td>Attaque moyenne</td><td> : ${player.attac.getMean() + 3.5 * Math.min(Math.floor(player.attac.diceNumber / 2), compLevel * 3)}</td></tr>
+		<tr><td>Dégâts moyens</td><td> : ${player.damage.getMean()} / ${player.damage.getCriticalMean()}</td></tr>
+		</table>`;
 	},
 
 	"Balayage": (player)=>{
-		var att = player.attac.getMean();
-		var html = "Jet de déstabilisation moyen : " + att;
-		html += "<br>Si le jet de déstabilisation est strictement supérieur au jet de stabilité, le défenseur se retrouve à terre.";
-		html += "<br>De plus, si le jet de déstabilisation est strictement supérieur à deux fois le jet de stabilité,";
-		html += " le défenseur active les possibles pièges sur la case.";
-		html += "<br>Un Trõll <i>à terre</i> dispose d'un Point d'Action de moins lorsqu'il active un tour.";
-		html += "<br>Pour se relever, le Trõll doit utiliser l'action <i>se relever</i> qui coûte 2 PA.";
-		return html;
+		return `Jet de déstabilisation moyen : ${player.attac.getMean()}
+		<br>Si le jet de déstabilisation est strictement supérieur au jet de stabilité, le défenseur se retrouve à terre.
+		<br>De plus, si le jet de déstabilisation est strictement supérieur à deux fois le jet de stabilité, le défenseur active les possibles pièges sur la case.
+		<br>Un Trõll <i>à terre</i> dispose d'un Point d'Action de moins lorsqu'il active un tour.
+		<br>Pour se relever, le Trõll doit utiliser l'action <i>se relever</i> qui coûte 2 PA.`;
 	},
 
-	"Balluchonnage": (player)=>{
-		return "<table><tr><td>Balluchonner</td><td> : 1 PA</td></tr><tr><td>Déballuchonner</td><td> : 2 PA</td></tr></table>"
+	"Balluchonnage": ()=>{
+		return `<table>
+		<tr><td>Balluchonner</td><td> : 1 PA</td></tr>
+		<tr><td>Déballuchonner</td><td> : 2 PA</td></tr>
+		</table>`;
 	},
 
-	"Bidouille": (player)=>{
-		var html = "<table><tr><td>Permet de Bidouiller</td></tr>";
-		html += "<tr><td><b>Un trésor</b> : complète le nom d'un objet de votre inventaire avec le texte de son choix.</td></tr>";
-		html += "<tr><td><b>Une bidouille</b> : crée un objet de toutes pièces, en lui donnant un nom et une descriptions";
-		html += " (poids en fonction du nombre de PA utilisé).</td></tr>";
-		html += "</table>";
-		return html;
+	"Bidouille": ()=>{
+		return `<table>
+		<tr><td>Permet de Bidouiller</td></tr>
+		<tr><td><b>Un trésor</b> : complète le nom d'un objet de votre inventaire avec le texte de son choix.</td></tr>
+		<tr><td><b>Une bidouille</b> : crée un objet de toutes pièces, en lui donnant un nom et une descriptions (poids en fonction du nombre de PA utilisé).</td></tr>
+		</table>`;
 	},
 
 	"Botte Secrète": (player)=>{
 		var des_att = Math.floor(2 * player.attac.diceNumber / 3);
 		var att = des_att * 3.5 + Math.floor((player.attac.physicalBonus + player.attac.magicalBonus) / 2);
-		var des_deg = Math.floor(player.attac.diceNumber /  2)
+		var des_deg = Math.floor(player.attac.diceNumber / 2)
 		var deg = des_deg * 2 + Math.floor((player.damage.physicalBonus + player.damage.magicalBonus) / 2);
 		var degCrit = deg + Math.floor(des_deg / 2) * 2;
-		return "<table><tr><td>Attaque moyenne</td><td> : " + att +
-			"</td></tr><tr><td>Dégâts moyens</td><td>  : " + deg + " / " + degCrit +
-			"</td></tr></table>50 % de l'armure totale de la cible est ignorée.";
+		return `<table>
+		<tr><td>Attaque moyenne</td><td> : ${att}</td></tr>
+		<tr><td>Dégâts moyens</td><td> : ${deg} / ${degCrit}</td></tr>
+		</table>
+		50 % de l'armure totale de la cible est ignorée.`;
 	},
 
 	"Camouflage": (player)=>{
@@ -133,12 +130,12 @@ chrall.talentBubblers = {
 		var range = computeRange(player.pv);
 		range -= Math.floor((player.strainBase + player.strainMalus) / 5); // malus de fatigue
 		range = Math.max(range, minRange);
-		var html = "<table><tr><td>Portée maximale</td><td> : " + maxRange + (maxRange > 1 ? " cases" : " case") + "</td></tr>";
-		html += "<tr><td>Portée actuelle</td><td> : " + range + (range > 1 ? " cases" : " case") + "</td></tr>";
-		html += "<tr><td>Attaque moyenne</td><td> : " + player.attac.getMean() + "</td></tr>";
-		html += "<tr><td>Dégâts moyens</td><td> : " + player.damage.getMean() + " / " + player.damage.getCriticalMean() + "</td></tr>";
-		html += "</table>";
-		return html;
+		return `<table>
+		<tr><td>Portée maximale</td><td> : ${chrall.pluralize(maxRange)}</td></tr>
+		<tr><td>Portée actuelle</td><td> : ${chrall.pluralize(range)}</td></tr>
+		<tr><td>Attaque moyenne</td><td> : ${player.attac.getMean()}</td></tr>
+		<tr><td>Dégâts moyens</td><td> : ${player.damage.getMean()} / ${player.damage.getCriticalMean()}</td></tr>
+		</table>`;
 	},
 
 	"Connaissance des Monstres": (player)=>{
@@ -224,22 +221,17 @@ chrall.talentBubblers = {
 	},
 
 	"Lancer de Potions": (player)=>{
-		var	p = Math.floor(2 + player.totalSight / 5),
-			cppc = player.talents["Lancer de Potions"].mastering + player.concentration,
-			s = player.sight.diceNumber + player.sight.physicalBonus,
-			html = "<table>";
-		html += "<tr><td>Portée (à l'horizontale)</td>";
-		html += "<td> : " + p + (p > 1 ? " cases" : " case") + "</td></tr>";
-		for (let d = 1; d <= s && d <= p && d <= 20; d++) {
-			var bv = Math.min(10, (1 - d) * 10 + player.totalSight);
-			html += "<tr><td>Jet de toucher à " + d + (d > 1 ? " cases" : " case");
-			html +=	"</td><td> : " + (cppc + bv) + " %</td></tr>";
+		var trs = '';
+		for (let d = 1; d <= player.talents["Lancer de Potions"].range; d++) {
+			trs += `<tr><td>Jet de toucher à ${chrall.pluralize(d, 'case')}</td><td> : ${chrall.potionJetToucher(d)} %</td></tr>`;
 		}
-		html += "</table>";
-		html += "Ce calcul est fait pour votre concentration actuelle (" + player.concentration +" %).";
-		html += "<br>En vous concentrant vous augmentez d'autant votre jet de toucher.";
-		html += "<br>Si vous ratez ce jet, la potion est perdue sans effet.";
-		return html;
+		return `<table>
+		<tr><td>Portée (à l'horizontale)</td><td> : ${chrall.pluralize(player.talents["Lancer de Potions"].range, 'case')}</td></tr>
+		${trs}
+		</table>
+		Ce calcul est fait pour votre concentration actuelle (${player.concentration} %).
+		<br>En vous concentrant vous augmentez d'autant votre jet de toucher.
+		<br>Si vous ratez ce jet, la potion est perdue sans effet.`;
 	},
 
 	"Miner": (player)=>{
@@ -283,7 +275,7 @@ chrall.talentBubblers = {
 	},
 	
 	"S'interposer": (player)=>{
-		var stab = 3.5 * Math.floor(2 * (player.dodge.diceNumber + player.regeneration.diceNumber) / 3) +  player.dodge.physicalBonus + player.dodge.magicalBonus;
+		var stab = 3.5 * Math.floor(2 * (player.dodge.diceNumber + player.regeneration.diceNumber) / 3) + player.dodge.physicalBonus + player.dodge.magicalBonus;
 		var html = "<table>";
 		html += "<tr><td>Jet de stabilité moyen</td><td> : " + stab + "</td></tr>";
 		html += "</table>";
@@ -396,7 +388,7 @@ chrall.talentBubblers = {
 				html += `<tr><td>Griffe du Sorcier</td><td>+${bonusDices[3]}D3 (+${bonusDices[3] * 2})</td></tr>`;
 			}
 			if (player.talents['Projectile Magique']){
-				bonusDices[4] = bonusDices[4] + chrall.decumul(i, 1 + chrall.player().sight.diceNumber / 10);
+				bonusDices[4] = bonusDices[4] + chrall.decumul(i, 1 + player.sight.diceNumber / 10);
 				html += `<tr><td>Projectile Magique</td><td>+${bonusDices[4]}D3 (+${bonusDices[4] * 2})</td></tr>`;
 			}
 			if (player.talents['Siphon des âmes']){
@@ -465,21 +457,14 @@ chrall.talentBubblers = {
 	},
 
 	"Griffe du Sorcier": (player)=>{
-		var clawDiceNumber = Math.floor(player.attac.diceNumber * player.magicalAttackMultiplier);
-		var att = 3.5 * clawDiceNumber + player.attac.magicalBonus;
-		var clawDamageDiceNumber = Math.floor(player.damage.diceNumber * player.magicalDamageMultiplier);
-		var deg = 2 * Math.floor(clawDamageDiceNumber / 2) + player.damage.magicalBonus;
-		var dur = 1 + Math.floor(player.sight.diceNumber / 5);
-		var vir = 1 + Math.floor(player.pvMaxSansBMM / 30) +
-				Math.floor(player.regeneration.diceNumber / 3);
-		var html = "<table>";
-		html += "<tr><td>Attaque</td><td> : " + att + "</td></tr>";
-		html += "<tr><td>Dégâts de la frappe</td><td> : " + deg + " PV</td></tr>";
-		html += "<tr><td>Durée du poison</td><td> : " + dur + (dur > 1 ? " tours" : " tour") + "</td></tr>";
-		html += "<tr><td>Virulence du poison</td><td> : " + vir + " D3 PV par tour</td></tr>";
-		html += "</table>";
-		html += "En cas de Résistance Magique, les effets du poison sont<br>divisés par deux et durent deux fois moins longtemps.";
-		return html;
+		var venin = Math.floor(1 + (player.pvMaxSansBMM / 10 + player.regeneration.diceNumber) / 3);
+		return `<table>
+		<tr><td>Attaque</td><td> : ${3.5 * player.attac.diceNumber + player.attac.magicalBonus}</td></tr>
+		<tr><td>Dégâts de la frappe</td><td> : ${2 * Math.floor(player.damage.diceNumber / 2) + player.damage.magicalBonus} PV</td></tr>
+		<tr><td>Venin virulent</td><td> : -${Math.floor(1.5 * venin)}D3 PV durant ${chrall.pluralize(Math.floor(1 + player.sight.diceNumber / 10), 'tour')}</td></tr>
+		<tr><td>Venin insidieux</td><td> : -${venin}D3 PV durant ${chrall.pluralize(Math.floor(2 + player.sight.diceNumber / 5), 'tour')}</td></tr>
+		</table>
+		En cas de Résistance Magique, les effets du poison durent deux fois moins longtemps.`;
 	},
 
 	"Hypnotisme": (player)=>{
@@ -507,25 +492,6 @@ chrall.talentBubblers = {
 		return "Altitude de lévitation : " + h + " cm du sol";
 	},
 
-	"Précision Magique": (player)=>{
-		var html = "Le sort Précision Magique permet à votre Trõll de disposer d'un bonus de dés d'attaque \
-			sur tous vos sortilèges d'attaque égal à 20% des dés d'attaque du sort utilisé. \
-			Ce bonus dure deux tours et s'accompagne d'un malus aux dés de dégâts égal à 20% \
-			des dés de dégâts du sortilège utilisé\
-			<table>\
-			<tr><td>1<sup>ère</sup> PreM</td><td>Attaque magique +20%</td><td>Dégâts magique -20%</td></tr>\
-			<tr><td>2<sup>ème</sup> PreM</td><td>Attaque magique +" + chrall.decumul(1, 20) +
-			"%</td><td>Dégâts magiques -" + chrall.decumul(1, 20) + "%</td></tr>\
-			<tr><td>3<sup>ème</sup> PreM</td><td>Attaque magique +" + chrall.decumul(2, 20) +
-			"%</td><td>Dégâts magiques -" + chrall.decumul(2, 20) + "%</td></tr>\
-			<tr><td>4<sup>ème</sup> PreM</td><td>Attaque magique +" + chrall.decumul(3, 20) +
-			"%</td><td>Dégâts magiques -" + chrall.decumul(3, 20) + "%</td></tr>\
-			<tr><td>5<sup>ème</sup> PreM</td><td>Attaque magique +" + chrall.decumul(4, 20) +
-			"%</td><td>Dégâts magiques -" + chrall.decumul(4, 20) + "%</td></tr>\
-			</table>";
-		return html;
-	},
-
 	"Projection": (player)=>{
 		var html = "La créature ciblée (Troll ou Monstre) par le lanceur du Sortilège sera projetée";
 		html += " par un champ de force magique vers une zone voisine.";
@@ -535,41 +501,14 @@ chrall.talentBubblers = {
 	},
 
 	"Projectile Magique": (player)=>{
-		var range = chrall.projoRange(player.totalSight);
-		player.talents["Projectile Magique"].range = range;
-		var html = `<tr><td>Portée</td><td> : ${range} cases (${chrall.projoRequiredSight(range + 1)} de vue totale augmentera la portée)</td></tr>`;
-		var projectileDiceNumber = Math.floor(player.sight.diceNumber * player.magicalAttackMultiplier);
-		var att = 3.5 * projectileDiceNumber + player.attac.magicalBonus;
-		html += `<tr><td>Attaque moyenne</td><td> : ${att} (${projectileDiceNumber} D6 ${chrall.itoa(player.attac.magicalBonus)})</td></tr>`;
+		var range = player.talents["Projectile Magique"].range;
+		var html = `<tr><td>Portée</td><td> : ${chrall.pluralize(range)} (${chrall.projoRequiredSight(range + 1)} de vue totale augmentera la portée)</td></tr>`;
+		html += `<tr><td>Attaque moyenne</td><td> : ${3.5 * player.sight.diceNumber + player.attac.magicalBonus} (${player.sight.diceNumber} D6 ${chrall.itoa(player.attac.magicalBonus)})</td></tr>`;
 		for (var d = 0; d <= range; d++) {
 			var damages = chrall.projoDamage(range - d);
-			if (d === 0) {
-				html += "<tr><td>Dégâts moyens sur votre case";
-			} else {
-				html += `<tr><td>Dégâts moyens à ${d} case${(d > 1 ? 's' : '')}`;
-			}
-			html += `</td><td> : ${damages.damage} / ${damages.damageCrit}</td></tr>`;
+			html += `<tr><td>Dégâts moyens à ${chrall.pluralize(d)}</td><td> : ${damages.damage} / ${damages.damageCrit}</td></tr>`;
 		}
 		return `<table>${html}</table>`;
-	},
-
-	"Puissance Magique": (player)=>{
-		var html = "Le sort Puissance Magique permet à votre Trõll de disposer d'un bonus de dés de dégâts \
-			sur tous vos sortilèges d'attaque égal à 20% des dés de dégâts du sort utilisé. \
-			Ce bonus dure deux tours et s'accompagne d'un malus aux dés d'attaque égal à 20% \
-			des dés d'attaque du sortilège utilisé\
-			<table>\
-			<tr><td>1<sup>ère</sup> PuM</td><td>Attaque magique -20%</td><td>Dégâts magiques +20%</td></tr>\
-			<tr><td>2<sup>ème</sup> PuM</td><td>Attaque magique -" + chrall.decumul(1, 20) +
-			"%</td><td>Dégâts magiques +" + chrall.decumul(1, 20) + "%</td></tr>\
-			<tr><td>3<sup>ème</sup> PuM</td><td>Attaque magique -" + chrall.decumul(2, 20) +
-			"%</td><td>Dégâts magiques +" + chrall.decumul(2, 20) + "%</td></tr>\
-			<tr><td>4<sup>ème</sup> PuM</td><td>Attaque magique -" + chrall.decumul(3, 20) +
-			"%</td><td>Dégâts magiques +" + chrall.decumul(3, 20) + "%</td></tr>\
-			<tr><td>5<sup>ème</sup> PuM</td><td>Attaque magique -" + chrall.decumul(4, 20) +
-			"%</td><td>Dégâts magiques +" + chrall.decumul(4, 20) + "%</td></tr>\
-			</table>";
-		return html;
 	},
 
 	"Rafale Psychique": (player)=>{
@@ -599,7 +538,7 @@ chrall.talentBubblers = {
 		var html = "<table>";
 		html += "<tr><td>Attaque</td><td> : " + att + "</td></tr>";
 		html += "<tr><td>Dégâts de la frappe</td><td> : " + deg + " PV</td></tr>";
-		html += "<tr><td>Nécrose : Attaque</td><td> :  -" + nec + " durant deux tours</td></tr>";
+		html += "<tr><td>Nécrose : Attaque</td><td> : -" + nec + " durant deux tours</td></tr>";
 		html += "</table>";
 		html += "En cas de Résistance Magique, les dégâts sont divisés par deux<br>de même que les effets et la durée de la nécrose.";
 		return html;
@@ -607,12 +546,10 @@ chrall.talentBubblers = {
 
 	"Télékinésie": (player)=>{
 		var p = Math.floor(player.totalSight / 2);
+		p = 1;
 		var f = function(p){
 			if (p < 0) return " sont trop lourds pour votre vue.";
-			var h = " sont ciblables ";
-			if (p == 0) return h + "sur votre case.";
-			if (p == 1) return h + "à une case.";
-			return h + "à " + p + " cases.";
+			return ` sont ciblables à ${chrall.pluralize(p)}`;
 		}
 		var html = "Les trésors d'une Plum' et Très Léger" + f(p + 2);
 		html += "<br>Les trésors Léger" + f(p + 1);
@@ -675,14 +612,13 @@ chrall.talentBubblers = {
 	"Vision Accrue": (player)=>{
 		var a = Math.floor(player.sight.diceNumber / 2);
 		var tempTotalSight = player.totalSight;
-		var range = chrall.projoRange(player.totalSight);
 		var html = ['Premiere VA', 'Deuxième VA', 'Troisième VA', 'Quatrième VA', 'Cinquième VA', 'Sixième et suivantes'].map(function (count, i){
 			tempTotalSight += chrall.decumul(i, a);
 			var bonusProjo = '';
 			if (player.race === 'Tomawak'){
-				bonusProjo = `, Projectile Magique +${chrall.projoRange(tempTotalSight) - range}D3`;
+				bonusProjo = `, Projectile Magique +${chrall.projoRange(tempTotalSight) - player.talents['Projectile Magique'].range}D3`;
 			}
-			return `<tr><td>${count}</td><td> : +${chrall.decumul(i, a)} (${tempTotalSight} cases${bonusProjo})</td></tr>`;
+			return `<tr><td>${count}</td><td> : +${chrall.decumul(i, a)} (${chrall.pluralize(tempTotalSight)}${bonusProjo})</td></tr>`;
 		}).join('');
 		return `<table>${html}</table>`;
 	},
@@ -700,16 +636,13 @@ chrall.talentBubblers = {
 		if (range == 0) {
 			html += "sur votre case<br>(ce serait mieux si vous voyiez un peu mieux le visible pour commencer)."
 		} else {
-			html += "jusqu'à " + range + (range > 1 ? " cases." : " case.");
+			html += `jusqu'à ${chrall.pluralize(range)}.`;
 		}
 		html += "<br>Permet également de voir les autres éléments cachés du jeu à une portée de 1 case.";
 		return html;
 	},
 
 	"Vue Troublée": (player)=>{
-		var s = player.sight.diceNumber;
-		var html = "Vue -" + Math.floor(s / 3) + " cases";
-		html += "<br>Un jet de RM réussi divise par deux ce malus soumis par ailleurs au décumul.";
-		return html;
+		return `Vue -${chrall.pluralize(Math.floor(player.sight.diceNumber / 3))}<br>Un jet de RM réussi divise par deux ce malus soumis par ailleurs au décumul.`;
 	},
 };

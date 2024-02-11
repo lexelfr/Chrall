@@ -18,7 +18,7 @@
 		var html = '';
 		html += "<form class=gridFiltersForm>";
 		if (player.totalSight > 5) {
-			html += '<img title="Centre la vue sur votre troll" id=goto_player class=butt src="' + chrome.extension.getURL("player_target.png") + '">';
+			html += '<img title="Centre la vue sur votre troll" id=goto_player class=butt src="' + chrome.runtime.getURL("player_target.png") + '">';
 			html += "Horizon : <select id=viewRedux>";
 			html += "<option value=" + horizontalViewLimit + ">Actuel (vue de " + horizontalViewLimit + ")</option>";
 			if (horizontalViewLimit != 4 && player.totalSight > 4) {

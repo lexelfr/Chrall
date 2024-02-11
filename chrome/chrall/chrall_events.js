@@ -6,7 +6,7 @@
 			var player = chrall.player();
 			var link = $(this);
 			var href = link.attr('href');
-			var trollId = href.split('\'')[1];
+			var trollId = href.match(/\d+/)[0];
 			if (trollId != player.id && trollId != chrall.viewedTrollId) {
 				chrall.triggerBubble(
 					link,

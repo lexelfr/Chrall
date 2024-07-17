@@ -94,6 +94,7 @@ case "Play2.php": // c'est le frameset qui engloble tout ce qui n'est pas la col
 	break;
 case "Play_a_Talent.php":
 case "Play_a_Move.php":
+case "Play_a_Action.php":
 	chrall.listenForChangeLocation('action');
 	chrall.injectMove();
 	break;

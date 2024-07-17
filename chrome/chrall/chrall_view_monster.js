@@ -15,11 +15,11 @@
 		var level = 0;
 		var i, index, newMonsterName, monsterFamily, templateText, actualTemplate;
 
-		// Archi- est pour un monstre qui est son propre template (e.g. sorcière sorcière => archi-sorcière)
-		if ("Archi-" == monsterName.substring(0, 6)) {
-			monsterName = monsterName.substring(6).trim();
-			monsterName = monsterName + " " + monsterName;
-		}
+		["Archi-", "Ovi-"].forEach((template) => {
+			if (template == monsterName.substring(0, template.length)) {
+				monsterName = monsterName.substring(0, template.length - 1) + " " + monsterName.substring(template.length).trim();
+			}
+		});
 
 		for (i = 0; i < templates.length; i++) {
 			var template = templates[i];
@@ -97,7 +97,7 @@
 		["Alchimiste", 2, SUFFIX],
 		["Alpha", 11, PREFIX],
 		["Archaïque", -1, SUFFIX],
-		["Archi-", 5, PREFIX],
+		["Archi", 5, PREFIX],
 		["Archiatre", 2, PREFIX],
 		["Attentionné", 2, SUFFIX],
 		["Attentionnée", 2, SUFFIX],
@@ -170,6 +170,7 @@
 		["Mutante", 2, SUFFIX],
 		["Ouvrière", 0, SUFFIX],
 		["Ouvrier", 0, SUFFIX],
+		["Ovi", 4, PREFIX],
 		["Paysan", -1, PREFIX],
 		["Paysanne", -1, PREFIX],
 		["Petit", -1, PREFIX],
@@ -1533,7 +1534,7 @@
 			["Xorn Coriace [Mineur]", 17],
 			["Xorn Corrompu [Mineur]", 17],
 			["Xorn des Abysses [Initial]", 17],
-			["Archi-Sorcière [Nouvelle]", 17],
+			["Archi-Sorcière [Nouvelle]", 22],
 			["Barbare Yuan-ti [Jeune]", 17],
 			["Champion Géant de Pierre [Nouveau]", 17],
 			["Frondeur Golem d'Argile [Nouveau]", 17],

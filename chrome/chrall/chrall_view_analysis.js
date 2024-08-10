@@ -309,21 +309,28 @@
 		if (table===undefined) return;
 		var lines = table.querySelectorAll("tbody tr");
 		grid.nbCenotaphsInView = lines.length;
-		for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-			var item = new chrall.Cenotaphe();
-			var cells = lines[lineIndex].children;
-			var i = 1;
-			if (cells.length>=7) {
-				item.actions = cells[i++].innerHTML;
+		try {
+			for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+				var item = new chrall.Thing();
+				var cells = lines[lineIndex].children;
+				console.log('cells:', cells.length);
+				let i = 1;
+				if (cells.length>=7) {
+					// c'est le cas si le "menu d'actions contextuelles" est
+					//  coché dans les options de vue de MH
+					item.actions = cells[i++].innerHTML;
+				}
+				i += 1;
+				var nameCell = cells[i++];
+				item.setName(nameCell.textContent);
+				item.x = parseInt(cells[i++].textContent);
+				item.y = parseInt(cells[i++].textContent);
+				item.z = parseInt(cells[i++].textContent);
+				grid.getCellNotNull(item.x, item.y).addMushroom(item);
+				chrall.addActionPointDistance(cells, item.x, item.y, item.z);
 			}
-			item.id = parseInt(cells[i++].textContent);
-			var nameCell = cells[i++];
-			item.setName(nameCell.textContent);
-			item.x = parseInt(cells[i++].textContent);
-			item.y = parseInt(cells[i++].textContent);
-			item.z = parseInt(cells[i++].textContent);
-			grid.getCellNotNull(item.x, item.y).addCenotaph(item);
-			chrall.addActionPointDistance(cells, item.x, item.y, item.z);
+		} catch (e) {
+			console.warn("Erreur lors du décodage de la table des cadavres");
 		}
 	};
 
